@@ -179,6 +179,203 @@ def title(ws, text, sub=None):
         ws["A2"].font = Font(italic=True, color="666666")
 
 
+pct1 = "0.0%"
+
+
+def add_dashboard(wb, bridge, retention, annual, cohorts, health, band_summary):
+    """One-page Dashboard tab (first tab): KPI tiles, charts, top At Risk customers."""
+    from openpyxl.chart import BarChart, LineChart, Reference
+    from openpyxl.chart.label import DataLabelList
+    fict = "Fictional company and fictional data. Created for demonstration only."
+    cd = wb.create_sheet("Chart Data")
+    cd["A1"] = "Data behind the Dashboard charts. Values copied from the other tabs."
+    cd["A1"].font = Font(italic=True, color="666666")
+    # 1) MRR movements (churn and contraction as negatives)
+    mv = pd.DataFrame({
+        "Month": bridge["month"], "Closing MRR": bridge["closing_mrr"], "New": bridge["new_mrr"],
+        "Expansion": bridge["expansion_mrr"], "Contraction": -bridge["contraction_mrr"],
+        "Churned": -bridge["churned_mrr"]})
+    e1 = write_table(cd, mv, 3, 1)
+    # 2) GRR / NRR
+    rt = retention.rename(columns={"month": "Month", "grr": "GRR", "nrr": "NRR"})[["Month", "GRR", "NRR"]]
+    e2 = write_table(cd, rt, 3, 8, {"GRR": pct1, "NRR": pct1})
+    # 3) Health bands
+    order = {"Healthy": 0, "Watch": 1, "At Risk": 2}
+    bs = band_summary.copy()
+    bs["o"] = bs["health_band"].map(order)
+    bs = bs.sort_values("o")[["health_band", "customers", "mrr"]]
+    bs.columns = ["Band", "Customers", "MRR"]
+    e3 = write_table(cd, bs, 3, 12, {"MRR": '"$"#,##0'})
+    # 4) Cohort logo retention (rows = months since signup, one column per cohort)
+    pv = (cohorts.pivot(index="months_since_signup", columns="cohort", values="logo_retention_pct") / 100)
+    pv = pv.reindex([0, 3, 6, 9, 12]).round(3)
+    pv.index = [f"Month {i}" for i in pv.index]
+    pv = pv.reset_index().rename(columns={"index": "Months since signup"})
+    e4 = write_table(cd, pv, 3, 16, {c: "0%" for c in pv.columns[1:]})
+    for i in range(1, 22):
+        cd.column_dimensions[get_column_letter(i)].width = 13
+
+    ws = wb.create_sheet("Dashboard", 0)
+    ws.sheet_view.showGridLines = False
+    for i in range(1, 19):
+        ws.column_dimensions[get_column_letter(i)].width = 11.5
+    ws["A1"] = "Tandrel: Retention & Customer Health Dashboard"
+    ws["A1"].font = Font(bold=True, size=20, color=TEAL)
+    ws["A2"] = fict + "  Period: Nov 2025 to Oct 2026."
+    ws["A2"].font = Font(italic=True, color="666666")
+
+    last = bridge.iloc[-1]
+    ann = annual.iloc[0]
+    at = band_summary[band_summary["health_band"] == "At Risk"]
+    at_n = int(at["customers"].sum()) if len(at) else 0
+    at_pct = float(at["pct_of_mrr"].sum()) / 100 if len(at) else 0.0
+    tiles = [
+        ("Closing MRR", f"${int(last['closing_mrr']):,}"),
+        ("Paying customers", f"{int(last['closing_customers'])}"),
+        ("12-month GRR", f"{ann['grr_12m']:.1%}"),
+        ("12-month NRR", f"{ann['nrr_12m']:.1%}"),
+        ("Logo churn (Oct)", f"{last['logo_churn_rate']:.2%}"),
+        ("At Risk customers", f"{at_n}  ({at_pct:.1%} of MRR)"),
+    ]
+    thin = Side(style="thin", color="B7C9C9")
+    for k, (lab, val) in enumerate(tiles):
+        c1 = 1 + k * 3
+        c2 = c1 + 2
+        for r_, txt, size, bold, color in [(4, lab, 10, False, "55706F"), (5, val, 18, True, TEAL)]:
+            ws.merge_cells(start_row=r_, start_column=c1, end_row=r_, end_column=c2)
+            cell = ws.cell(row=r_, column=c1, value=txt)
+            cell.font = Font(size=size, bold=bold, color=color)
+            cell.alignment = Alignment(horizontal="center", vertical="center")
+            for cc in range(c1, c2 + 1):
+                ws.cell(row=r_, column=cc).fill = PatternFill("solid", fgColor=LIGHT)
+                ws.cell(row=r_, column=cc).border = Border(
+                    left=thin if cc == c1 else None, right=thin if cc == c2 else None,
+                    top=thin if r_ == 4 else None, bottom=thin if r_ == 5 else None)
+    ws.row_dimensions[4].height = 20
+    ws.row_dimensions[5].height = 34
+
+    growth = ("Existing customers grew revenue even after churn and contraction."
+              if ann["nrr_12m"] >= 1 else "Expansion did not cover churn and contraction.")
+    ws["A7"] = (f"Key insight: NRR {ann['nrr_12m']:.1%} vs GRR {ann['grr_12m']:.1%}. {growth} "
+                f"{at_n} customers are At Risk and hold {at_pct:.1%} of MRR.")
+    ws["A7"].font = Font(bold=True, size=11, color="1F3B3A")
+
+    n = len(mv)
+    # Chart 1: closing MRR line
+    c = LineChart()
+    c.title = "Closing MRR by month"
+    c.add_data(Reference(cd, min_col=2, min_row=3, max_row=3 + n), titles_from_data=True)
+    c.set_categories(Reference(cd, min_col=1, min_row=4, max_row=3 + n))
+    c.legend = None
+    c.y_axis.numFmt = '"$"#,##0'
+    c.y_axis.delete = False
+    c.x_axis.delete = False
+    c.height, c.width = 7.5, 15.5
+    for sr in c.series:
+        sr.smooth = False
+    ws.add_chart(c, "A9")
+    # Chart 2: MRR movements stacked columns
+    c = BarChart()
+    c.type = "col"
+    c.grouping = "stacked"
+    c.overlap = 100
+    c.title = "Monthly MRR movements"
+    c.add_data(Reference(cd, min_col=3, max_col=6, min_row=3, max_row=3 + n), titles_from_data=True)
+    c.set_categories(Reference(cd, min_col=1, min_row=4, max_row=3 + n))
+    c.y_axis.numFmt = '"$"#,##0'
+    c.y_axis.delete = False
+    c.x_axis.delete = False
+    c.x_axis.tickLblPos = "low"
+    c.legend.position = "b"
+    c.height, c.width = 7.5, 15.5
+    ws.add_chart(c, "J9")
+    # Chart 3: GRR / NRR
+    c = LineChart()
+    c.title = "Monthly GRR and NRR"
+    c.add_data(Reference(cd, min_col=9, max_col=10, min_row=3, max_row=3 + len(rt)), titles_from_data=True)
+    c.set_categories(Reference(cd, min_col=8, min_row=4, max_row=3 + len(rt)))
+    c.y_axis.numFmt = "0%"
+    c.y_axis.scaling.min = 0.9
+    c.y_axis.delete = False
+    c.x_axis.delete = False
+    c.legend.position = "b"
+    c.height, c.width = 7.5, 15.5
+    for sr in c.series:
+        sr.smooth = False
+    ws.add_chart(c, "A25")
+    # Chart 4: cohort logo retention
+    c = LineChart()
+    c.title = "Cohort logo retention by signup quarter"
+    ncoh = len(pv.columns) - 1
+    c.add_data(Reference(cd, min_col=17, max_col=16 + ncoh, min_row=3, max_row=3 + len(pv)), titles_from_data=True)
+    c.set_categories(Reference(cd, min_col=16, min_row=4, max_row=3 + len(pv)))
+    c.y_axis.numFmt = "0%"
+    c.y_axis.scaling.min = 0.5
+    c.y_axis.scaling.max = 1.0
+    c.y_axis.delete = False
+    c.x_axis.delete = False
+    c.legend.position = "b"
+    c.height, c.width = 7.5, 15.5
+    for sr in c.series:
+        sr.smooth = False
+    ws.add_chart(c, "J25")
+    # Chart 5: MRR by health band
+    c = BarChart()
+    c.type = "col"
+    c.title = "MRR by health band"
+    c.add_data(Reference(cd, min_col=14, min_row=3, max_row=3 + len(bs)), titles_from_data=True)
+    c.set_categories(Reference(cd, min_col=12, min_row=4, max_row=3 + len(bs)))
+    c.legend = None
+    c.y_axis.numFmt = '"$"#,##0'
+    c.y_axis.delete = False
+    c.x_axis.delete = False
+    c.dataLabels = DataLabelList()
+    c.dataLabels.showVal = True
+    c.dataLabels.showSerName = False
+    c.dataLabels.showCatName = False
+    c.dataLabels.showLegendKey = False
+    c.height, c.width = 7.5, 15.5
+    ws.add_chart(c, "A41")
+
+    # Top 10 At Risk table
+    ws["J41"] = "Ten lowest health scores (Oct 2026)"
+    ws["J41"].font = Font(bold=True, size=12, color=TEAL)
+    top = health.head(10)[["customer_id", "company_name", "segment", "mrr", "health_score"]].copy()
+    top.columns = ["ID", "Company (fictional)", "Segment", "MRR", "Score"]
+    hdr = 42
+    pos = [10, 11, 14, 16, 17]  # columns J, K(merged K:M), N(N:O), P, Q
+    heads = list(top.columns)
+    spans = {10: 10, 11: 13, 14: 15, 16: 16, 17: 17}
+    for (cstart, cend), name in zip([(10, 10), (11, 13), (14, 15), (16, 16), (17, 17)], heads):
+        if cend > cstart:
+            ws.merge_cells(start_row=hdr, start_column=cstart, end_row=hdr, end_column=cend)
+        cell = ws.cell(row=hdr, column=cstart, value=name)
+        cell.font = Font(bold=True, color="FFFFFF")
+        cell.fill = PatternFill("solid", fgColor=TEAL)
+        cell.alignment = Alignment(horizontal="center")
+        for cc in range(cstart, cend + 1):
+            ws.cell(row=hdr, column=cc).fill = PatternFill("solid", fgColor=TEAL)
+    for i, rec in enumerate(top.itertuples(index=False), start=1):
+        for (cstart, cend), val, name in zip([(10, 10), (11, 13), (14, 15), (16, 16), (17, 17)], rec, heads):
+            if cend > cstart:
+                ws.merge_cells(start_row=hdr + i, start_column=cstart, end_row=hdr + i, end_column=cend)
+            cell = ws.cell(row=hdr + i, column=cstart, value=val.item() if hasattr(val, "item") else val)
+            if name == "MRR":
+                cell.number_format = '"$"#,##0'
+            if name == "Score":
+                cell.number_format = "0.0"
+            if i % 2 == 0:
+                for cc in range(cstart, cend + 1):
+                    ws.cell(row=hdr + i, column=cc).fill = PatternFill("solid", fgColor=LIGHT)
+    ws["A57"] = ("How to read: GRR = revenue kept without expansion. NRR = revenue kept including expansion. "
+                 "Health score weights are assumptions for this demo.")
+    ws["A57"].font = Font(italic=True, color="666666")
+    ws.page_setup.orientation = "landscape"
+    ws.page_setup.fitToWidth = 1
+    ws.page_setup.fitToHeight = 1
+    ws.sheet_properties.pageSetUpPr.fitToPage = True
+
+
 def build_excel(data_checks, recon, bridge, retention, annual, cohorts, health, band_summary, log):
     wb = Workbook()
     money, pct, pct0 = '"$"#,##0', "0.0%", "0%"
@@ -333,8 +530,13 @@ def build_excel(data_checks, recon, bridge, retention, annual, cohorts, health, 
         c.alignment = Alignment(horizontal="center")
     set_widths(ws, {"A": 88, "B": 16, "C": 52})
 
+    add_dashboard(wb, bridge, retention, annual, cohorts, health, band_summary)
+    wb.active = 0
+
     # Print setup: landscape, fit to one page wide
     for sheet in wb.worksheets:
+        if sheet.title == "Dashboard":
+            continue
         sheet.page_setup.orientation = "landscape"
         sheet.page_setup.fitToWidth = 1
         sheet.page_setup.fitToHeight = 0
