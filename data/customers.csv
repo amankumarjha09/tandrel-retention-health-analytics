@@ -1,0 +1,121 @@
+customer_id,company_name,segment,industry,region,signup_date,plan
+C001,Brightfield Finance,Mid-Market,Retail,India,2025-08-01,Growth
+C002,Brightfield Home,SMB,Logistics,Europe,2026-08-01,Starter
+C003,Pinegate Foods,Mid-Market,Education,Middle East,2026-05-01,Growth
+C004,Redstone Labs,Enterprise,Healthcare,North America,2026-01-01,Scale
+C005,Sunvale Learning,SMB,Education,North America,2025-01-01,Starter
+C006,Cedar Peak Health,Mid-Market,Fintech,Europe,2025-12-01,Growth
+C007,Cedar Peak Supply,SMB,Retail,Europe,2025-08-01,Starter
+C008,Westmore Logistics,SMB,Education,India,2025-09-01,Starter
+C009,Lakeview Studio,SMB,Logistics,Southeast Asia,2026-07-01,Starter
+C010,Greenhill Care,SMB,E-commerce,Middle East,2025-07-01,Starter
+C011,Sunvale Foods,SMB,Education,Southeast Asia,2026-02-01,Starter
+C012,Maple Crest Supply,Mid-Market,Fintech,North America,2025-08-01,Growth
+C013,Westmore Market,Mid-Market,Logistics,North America,2025-08-01,Growth
+C014,Redstone Learning,SMB,Travel,India,2026-02-01,Starter
+C015,Ashgrove Apparel,SMB,Logistics,Europe,2026-04-01,Starter
+C016,Brightfield Health,Mid-Market,Education,Middle East,2026-04-01,Growth
+C017,Northfield Travel,SMB,E-commerce,Middle East,2025-04-01,Starter
+C018,Brightfield Market,SMB,E-commerce,Europe,2025-11-01,Starter
+C019,Clearbrook Retail,Mid-Market,Education,Europe,2024-12-01,Growth
+C020,Harbor Lane Logistics,SMB,Retail,Southeast Asia,2025-08-01,Starter
+C021,Greenhill Market,SMB,Fintech,North America,2024-11-01,Starter
+C022,Cedar Peak Care,SMB,Education,Europe,2025-05-01,Starter
+C023,Pinegate Labs,SMB,Travel,Middle East,2026-08-01,Starter
+C024,Oakridge Health,Mid-Market,Healthcare,India,2025-02-01,Growth
+C025,Westmore Studio,SMB,Education,Europe,2026-02-01,Starter
+C026,Ironleaf Supply,SMB,Education,Europe,2025-02-01,Starter
+C027,Ironleaf Logistics,SMB,Healthcare,Europe,2025-04-01,Starter
+C028,Stonebridge Supply,SMB,Healthcare,India,2024-12-01,Starter
+C029,Redstone Care,Enterprise,Travel,Middle East,2025-09-01,Scale
+C030,Silverline Learning,Enterprise,Fintech,Europe,2026-04-01,Scale
+C031,Lakeview Health,SMB,E-commerce,Middle East,2024-12-01,Starter
+C032,Highmark Studio,SMB,Logistics,Southeast Asia,2025-03-01,Starter
+C033,Pinegate Travel,SMB,Logistics,India,2025-09-01,Starter
+C034,Westmore Mobility,Mid-Market,Healthcare,Europe,2025-08-01,Growth
+C035,Cedar Peak Mobility,SMB,E-commerce,Europe,2025-12-01,Starter
+C036,Oakridge Travel,SMB,Fintech,Southeast Asia,2025-09-01,Starter
+C037,Brightfield Foods,SMB,Travel,Europe,2025-02-01,Starter
+C038,Clearbrook Finance,Enterprise,Travel,Middle East,2025-06-01,Scale
+C039,Oakridge Home,SMB,Logistics,India,2025-09-01,Starter
+C040,Cedar Peak Studio,SMB,Education,North America,2025-09-01,Starter
+C041,Pinegate Home,SMB,Fintech,North America,2026-04-01,Starter
+C042,Harbor Lane Market,SMB,Fintech,India,2025-08-01,Starter
+C043,Northfield Care,Mid-Market,E-commerce,Southeast Asia,2025-10-01,Growth
+C044,Clearbrook Mobility,SMB,E-commerce,Southeast Asia,2026-01-01,Starter
+C045,Highmark Labs,Mid-Market,E-commerce,Europe,2025-06-01,Growth
+C046,Highmark Learning,SMB,E-commerce,Middle East,2024-11-01,Starter
+C047,Sunvale Market,SMB,Healthcare,Southeast Asia,2026-08-01,Starter
+C048,Greenhill Mobility,SMB,Retail,Southeast Asia,2025-10-01,Starter
+C049,Ironleaf Travel,Enterprise,E-commerce,Southeast Asia,2025-10-01,Scale
+C050,Riverton Foods,Enterprise,Logistics,North America,2026-03-01,Scale
+C051,Bluewave Home,Enterprise,Healthcare,India,2025-09-01,Scale
+C052,Westmore Finance,Mid-Market,Retail,India,2025-07-01,Growth
+C053,Northfield Supply,Mid-Market,Fintech,India,2026-07-01,Growth
+C054,Bluewave Care,Mid-Market,Logistics,India,2025-02-01,Growth
+C055,Lakeview Care,SMB,Fintech,Southeast Asia,2024-11-01,Starter
+C056,Harbor Lane Health,Mid-Market,Education,Middle East,2026-08-01,Growth
+C057,Highmark Apparel,SMB,Fintech,Southeast Asia,2025-02-01,Starter
+C058,Bluewave Supply,Mid-Market,Healthcare,Middle East,2025-01-01,Growth
+C059,Westmore Retail,Mid-Market,Fintech,North America,2025-08-01,Growth
+C060,Ashgrove Foods,Mid-Market,Logistics,India,2026-03-01,Growth
+C061,Clearbrook Care,SMB,Healthcare,North America,2024-12-01,Starter
+C062,Harbor Lane Home,SMB,Healthcare,North America,2026-01-01,Starter
+C063,Sunvale Apparel,SMB,Education,India,2025-12-01,Starter
+C064,Stonebridge Studio,SMB,Logistics,Middle East,2025-02-01,Starter
+C065,Ironleaf Retail,Enterprise,Retail,Europe,2025-02-01,Scale
+C066,Ashgrove Mobility,SMB,Logistics,India,2026-04-01,Starter
+C067,Silverline Market,SMB,Logistics,Middle East,2025-04-01,Starter
+C068,Maple Crest Labs,SMB,Retail,North America,2025-12-01,Starter
+C069,Silverline Finance,Mid-Market,Healthcare,North America,2025-01-01,Growth
+C070,Oakridge Supply,Mid-Market,Fintech,Middle East,2026-06-01,Growth
+C071,Greenhill Labs,SMB,Logistics,North America,2026-05-01,Starter
+C072,Clearbrook Logistics,SMB,Fintech,North America,2025-02-01,Starter
+C073,Highmark Travel,SMB,Retail,Middle East,2026-07-01,Starter
+C074,Ironleaf Finance,SMB,Education,India,2025-01-01,Starter
+C075,Oakridge Retail,SMB,Travel,North America,2025-10-01,Starter
+C076,Redstone Supply,SMB,Logistics,North America,2025-10-01,Starter
+C077,Pinegate Apparel,Mid-Market,Fintech,North America,2025-09-01,Growth
+C078,Maple Crest Mobility,SMB,Retail,Middle East,2025-11-01,Starter
+C079,Northfield Logistics,SMB,Education,North America,2026-07-01,Starter
+C080,Bluewave Foods,Mid-Market,Healthcare,North America,2024-12-01,Growth
+C081,Ashgrove Market,SMB,Retail,Southeast Asia,2026-04-01,Starter
+C082,Greenhill Retail,Mid-Market,Travel,Europe,2026-04-01,Growth
+C083,Lakeview Travel,Mid-Market,Education,Southeast Asia,2026-05-01,Growth
+C084,Pinegate Market,Mid-Market,Logistics,Southeast Asia,2025-09-01,Growth
+C085,Maple Crest Learning,Mid-Market,E-commerce,Middle East,2024-12-01,Growth
+C086,Sunvale Mobility,SMB,Healthcare,Southeast Asia,2025-04-01,Starter
+C087,Oakridge Logistics,SMB,Travel,Southeast Asia,2025-03-01,Starter
+C088,Silverline Studio,Enterprise,Logistics,Middle East,2026-07-01,Scale
+C089,Sunvale Retail,SMB,Logistics,Middle East,2026-08-01,Starter
+C090,Brightfield Retail,Mid-Market,Logistics,Europe,2025-10-01,Growth
+C091,Ironleaf Labs,SMB,Fintech,Middle East,2024-11-01,Starter
+C092,Brightfield Care,Mid-Market,Retail,Europe,2025-01-01,Growth
+C093,Clearbrook Foods,SMB,Retail,Europe,2025-10-01,Starter
+C094,Bluewave Travel,Enterprise,Healthcare,Middle East,2026-04-01,Scale
+C095,Highmark Supply,Mid-Market,Fintech,Europe,2024-12-01,Growth
+C096,Clearbrook Home,SMB,Fintech,India,2025-12-01,Starter
+C097,Northfield Retail,SMB,Education,Europe,2025-09-01,Starter
+C098,Pinegate Care,Mid-Market,Education,Middle East,2026-04-01,Growth
+C099,Westmore Foods,SMB,E-commerce,Middle East,2026-02-01,Starter
+C100,Westmore Learning,SMB,Logistics,Southeast Asia,2026-01-01,Starter
+C101,Ashgrove Labs,Enterprise,Fintech,Europe,2025-12-01,Scale
+C102,Redstone Health,SMB,Retail,India,2025-02-01,Starter
+C103,Lakeview Logistics,Enterprise,Logistics,India,2025-01-01,Scale
+C104,Sunvale Travel,Enterprise,Travel,North America,2025-07-01,Scale
+C105,Ashgrove Supply,Mid-Market,E-commerce,Southeast Asia,2025-08-01,Growth
+C106,Clearbrook Apparel,Mid-Market,Education,India,2026-02-01,Growth
+C107,Lakeview Market,SMB,Healthcare,North America,2025-08-01,Starter
+C108,Bluewave Logistics,SMB,E-commerce,North America,2026-08-01,Starter
+C109,Northfield Foods,SMB,Retail,India,2026-01-01,Starter
+C110,Brightfield Mobility,Mid-Market,Travel,North America,2024-12-01,Growth
+C111,Riverton Labs,SMB,Fintech,India,2026-04-01,Starter
+C112,Highmark Care,Mid-Market,E-commerce,India,2024-11-01,Growth
+C113,Greenhill Learning,SMB,Logistics,Southeast Asia,2025-05-01,Starter
+C114,Highmark Foods,Mid-Market,Logistics,Europe,2026-03-01,Growth
+C115,Oakridge Apparel,Mid-Market,Fintech,India,2025-09-01,Growth
+C116,Bluewave Retail,SMB,Education,Europe,2026-03-01,Starter
+C117,Cedar Peak Travel,Mid-Market,Fintech,India,2024-11-01,Growth
+C118,Lakeview Labs,Enterprise,Education,India,2025-12-01,Scale
+C119,Northfield Apparel,Mid-Market,Retail,Middle East,2025-03-01,Growth
+C120,Cedar Peak Labs,SMB,Healthcare,North America,2025-03-01,Starter
