@@ -16,6 +16,7 @@ This project turns four raw monthly files into one report:
 - **GRR and NRR** (revenue retention).
 - **Cohort retention** by signup quarter.
 - A **customer health score** that uses revenue, usage and chatbot support data.
+- A one-page **Dashboard** tab with KPI tiles and charts.
 - A **data check** tab that shows what was wrong in the raw data and how it was handled.
 
 The process is one command. Data checks run first. The report only builds if the numbers reconcile.
@@ -79,7 +80,7 @@ All data is fictional. It covers 24 months (Nov 2024 to Oct 2026) for 120 custom
 |---|---|
 | **SQL (SQLite)** | Data checks, MRR bridge (CTEs and `LAG()` window function), GRR and NRR, cohort retention, health score |
 | **Python (pandas, openpyxl)** | Dummy data generator, cleaning rules, pandas cross-checks, reconciliation, building the Excel file |
-| **Excel** | The final report: Summary, MRR Bridge, Retention, Cohorts, Health Scores, Data Checks |
+| **Excel** | The final report: Dashboard (charts), Summary, MRR Bridge, Retention, Cohorts, Health Scores, Data Checks |
 
 ## 7. SQL Queries
 
@@ -225,7 +226,11 @@ A part that cannot be measured (a new customer, or no CSAT answers) gets a neutr
 
 ## 10. Sample Output
 
-The full report is `output/Tandrel_Retention_Health_Report.xlsx`. It has six tabs: Summary, MRR Bridge, Retention, Cohorts, Health Scores and Data Checks.
+The full report is `output/Tandrel_Retention_Health_Report.xlsx`. It has a Dashboard tab first, then Summary, MRR Bridge, Retention, Cohorts, Health Scores, Data Checks and a Chart Data tab that feeds the charts.
+
+**Dashboard (fictional data)**
+
+![Tandrel dashboard](output/Tandrel_Dashboard.png)
 
 **Summary (Oct 2026, fictional data)**
 
@@ -331,5 +336,6 @@ tandrel-retention-health-analytics/
 │   ├── validate_data.py
 │   └── build_report.py
 └── output/
-    └── Tandrel_Retention_Health_Report.xlsx
+    ├── Tandrel_Retention_Health_Report.xlsx
+    └── Tandrel_Dashboard.png
 ```
